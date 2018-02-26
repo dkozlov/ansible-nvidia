@@ -1,0 +1,18 @@
+---
+docker_version: latest
+
+docker_state: started
+
+docker_restart_state: restarted
+
+docker_package_state: installed
+docker_dep_packages_state: installed
+
+docker_config_template: daemon.json.j2
+docker_config_file: /etc/docker/daemon.json
+
+docker_upstart_env_template: docker.j2
+docker_upstart_env_file: /etc/default/docker
+
+docker_systemd_env_template: systemd_env.conf.j2
+docker_systemd_env_file: /etc/systemd/system/docker.service.d/env.conf

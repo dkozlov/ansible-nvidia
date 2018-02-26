@@ -1,0 +1,27 @@
+---
+docker_deps:
+  - "linux-image-extra-{{ ansible_kernel }}"
+  - linux-image-extra-virtual
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - python-software-properties
+
+docker_deprecated_packages:
+  - docker
+  - docker-engine
+
+docker_gpg_key_url: https://download.docker.com/linux/ubuntu/gpg
+docker_gpg_key_file: /tmp/docker_gpg_key
+
+# `stable` or `edge`
+docker_type: stable
+
+docker_repo_suffix_map:
+  stable: stable
+  edge: stable edge
+
+docker_package: docker-ce
+
+docker_service: docker

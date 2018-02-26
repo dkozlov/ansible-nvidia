@@ -1,0 +1,4 @@
+---
+- name: Uninstall old versions
+  yum: "name={{ item }} state=absent"
+  with_items: "{{ docker_deprecated_packages }}"

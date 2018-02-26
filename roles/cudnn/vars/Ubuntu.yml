@@ -1,0 +1,47 @@
+---
+# vars file for cudnn
+cudnn_installer_map:
+  xenial:
+    v7:
+      v9.1:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.5.15-1+cuda9.1_amd64.deb
+      v9.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb 
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_7.0.5.15-1+cuda8.0_amd64.deb
+    v7-dev:
+      v9.1:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.5.15-1+cuda9.1_amd64.deb 
+      v9.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.5.15-1+cuda9.0_amd64.deb
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_7.0.5.15-1+cuda8.0_amd64.deb
+    v6:
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn6_6.0.21-1+cuda8.0_amd64.deb 
+    v6-dev:
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn6-dev_6.0.21-1+cuda8.0_amd64.deb
+  zesty:
+    v7:
+      v9.1:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7_7.0.5.15-1+cuda9.1_amd64.deb
+      v9.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb 
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7_7.0.5.15-1+cuda8.0_amd64.deb
+    v7-dev:
+      v9.1:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7-dev_7.0.5.15-1+cuda9.1_amd64.deb 
+      v9.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7-dev_7.0.5.15-1+cuda9.0_amd64.deb
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn7-dev_7.0.5.15-1+cuda8.0_amd64.deb
+    v6:
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn6_6.0.21-1+cuda8.0_amd64.deb
+    v6-dev:
+      v8.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/libcudnn6-dev_6.0.21-1+cuda8.0_amd64.deb
+
+cudnn_installer: "{{ cudnn_installer_map[ansible_distribution_release][cudnn_version_str][cuda_version_str]}}"

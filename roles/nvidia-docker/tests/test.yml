@@ -1,0 +1,11 @@
+---
+- hosts: test
+  connection: docker
+  remote_user: root
+  roles:
+    - role: ansible-role-nvidia-docker
+    - role: ansible-role-nvidia-docker
+      nvidia_docker_version: 1.0.1
+    - role: ansible-role-nvidia-docker
+      nvidia_docker_version: 2.0.2
+      nvidia_docker_docker_version: 17.12.0

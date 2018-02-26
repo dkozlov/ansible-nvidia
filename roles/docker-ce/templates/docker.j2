@@ -1,0 +1,3 @@
+{% for key, value in docker_envs.items() %}
+export {{key}}="{{value}}"
+{% endfor %}

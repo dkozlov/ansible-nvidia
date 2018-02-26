@@ -1,0 +1,15 @@
+---
+# Include variables and define needed variables.
+# eg: vars/Ubuntu.yml
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+
+# Setup/install tasks.
+# eg: tasks/setup-Ubuntu.yml
+- include: "setup-{{ ansible_distribution }}.yml"
+  static: no
+
+# Configure.
+# eg: tasks/configure-Ubuntu.yml
+- include: "configure-{{ ansible_distribution }}.yml"
+  static: no

@@ -1,0 +1,4 @@
+---
+
+nvidia_docker_version: 1.0.1
+nvidia_docker_docker_version: '*'

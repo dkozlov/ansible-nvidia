@@ -1,0 +1,11 @@
+---
+
+- name: import task for Debian derivatives
+  include: debian_v1.yml
+  static: no
+  when: ansible_os_family == "Debian" and nvidia_docker_version.startswith('1')
+
+- name: import task for Debian derivatives
+  include: debian_v2.yml
+  static: no
+  when: ansible_os_family == "Debian" and nvidia_docker_version.startswith('2')

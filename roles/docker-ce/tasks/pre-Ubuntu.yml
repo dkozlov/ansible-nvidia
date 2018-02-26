@@ -1,0 +1,7 @@
+---
+- name: Uninstall deprecated Docker package
+  apt: "name={{ item }} state=absent"
+  with_items: "{{ docker_deprecated_packages }}"
+  tags:
+    - always
+

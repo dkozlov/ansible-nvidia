@@ -1,0 +1,9 @@
+---
+- name: Ensure env file directory exists
+  file: "path={{ docker_upstart_env_file | dirname }} state=directory"
+  when: docker_envs is defined and docker_envs is not none
+
+- name: Configure docker environments
+  template: "src={{ docker_upstart_env_template }} dest={{ docker_upstart_env_file }}"
+  notify: restart docker
+  when: docker_envs is defined and docker_envs is not none

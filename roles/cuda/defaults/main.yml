@@ -1,0 +1,6 @@
+---
+# defaults file for cuda
+cuda_version_major: 9
+cuda_version_minor: 1
+cuda_version_str: "v{{ cuda_version_major }}.{{ cuda_version_minor }}"
+cuda_version_linux: "cuda-{{ cuda_version_major}}-{{ cuda_version_minor}}"

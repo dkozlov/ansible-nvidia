@@ -1,0 +1,20 @@
+---
+- name: Install yum-utils for manage yum repository
+  yum: "name=yum-utils state=present"
+
+- name: Install docker-ce repository
+  shell: "yum-config-manager --add-repo {{ docker_repo }}"
+
+- name: Enable the edge repository
+  shell: yum-config-manager --enable docker-ce-edge
+  when: docker_type == "edge"
+
+- name: Send pkg_version.sh to remote for get the pakcage version string
+  copy: "src=pkg_version.sh dest=/tmp/pkg_version.sh mode=0755"
+
+- name: Guess the package version string
+  shell: "/tmp/pkg_version.sh {{ docker_package }}  {{ docker_version }}"
+  register: __docker_pkg_version
+
+- name: Install docker-ce
+  yum: "name={{ docker_package }}-{{ __docker_pkg_version.stdout }} state=present update_cache=yes"

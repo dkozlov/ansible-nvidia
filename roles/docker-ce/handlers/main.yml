@@ -1,0 +1,15 @@
+---
+- name: restart docker service by systemd
+  systemd:
+    name: "{{ docker_service }}"
+    state: "{{ docker_restart_state }}"
+    daemon_reload: yes
+  listen: "restart docker"
+  when: ansible_service_mgr == "systemd"
+
+- name: restart docker service
+  service:
+    name: "{{ docker_service }}"
+    state: "{{ docker_restart_state }}"
+  listen: "restart docker"
+  when: ansible_service_mgr != "systemd"

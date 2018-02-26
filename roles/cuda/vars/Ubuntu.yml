@@ -1,0 +1,18 @@
+---
+cuda_download_url_map:
+  xenial:
+    v8.0:
+      deb: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+    v9.0:
+      deb: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+    v9.1:
+      deb: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb
+  zesty:
+    v9.0:
+      deb: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1704/x86_64/cuda-repo-ubuntu1704_9.0.176-1_amd64.deb
+    v9.1:
+      deb: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1704/x86_64/cuda-repo-ubuntu1704_9.1.85-1_amd64.deb
+
+cuda_installer: "{{ cuda_download_url_map[ansible_distribution_release][cuda_version_str] }}"
+
+cuda_home: /usr/local/cuda

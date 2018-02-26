@@ -1,0 +1,52 @@
+---
+
+- name: nvidia-docker (v2) release key is registered
+  apt_key:
+    url: https://nvidia.github.io/nvidia-docker/gpgkey
+    state: present
+
+- name: software-properties-common is installed for prerequisite for apt_repository ansible module
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: nvidia-docker (v2) apt repository is registered
+  apt_repository:
+    repo: "{{ item }}"
+    filename: nvidia-docker
+    state: present
+    mode: 0644
+    update_cache: yes
+  with_items:
+    - 'deb https://nvidia.github.io/libnvidia-container/ubuntu16.04/amd64 /'
+    - 'deb https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/amd64 /'
+    - 'deb https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64 /'
+
+- name: nvidia-docker (v1) is uninstalled
+  apt:
+    name: nvidia-docker
+    state: absent
+
+- name: confirm content of /etc/docker/daemon.json
+  command: cat /etc/docker/daemon.json
+  register: nvidia_docker_daemon_json_backup
+  failed_when: False
+  changed_when: False
+
+- name: nvidia-docker (v2) is installed
+  apt:
+    name: "nvidia-docker2={{ nvidia_docker_version }}+docker{{ nvidia_docker_docker_version }}-1"
+    state: present
+  notify: restart docker service
+
+- name: confirm content of /etc/docker/daemon.json after installation of nvidia-docker2
+  command: cat /etc/docker/daemon.json
+  register: nvidia_docker_daemon_json_v2
+  changed_when: False
+
+- name: content of /etc/docker/daemon.json is merged
+  copy:
+    content: "{{ nvidia_docker_daemon_json_backup.stdout | from_json | combine(nvidia_docker_daemon_json_v2.stdout | from_json) }}"
+    dest: /etc/docker/daemon.json
+    validate: python -m json.tool %s
+  when: nvidia_docker_daemon_json_backup.stdout != ""

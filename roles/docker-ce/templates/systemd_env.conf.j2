@@ -1,0 +1,4 @@
+[Service]
+{% for key, value in docker_envs.items() %}
+Environment="{{key}}={{value}}"
+{% endfor %}

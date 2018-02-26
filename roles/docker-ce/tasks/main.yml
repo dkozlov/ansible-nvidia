@@ -1,0 +1,33 @@
+---
+# Include variables and define needed variables.
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags:
+    - always
+
+# Pre tasks
+- include: "pre-{{ ansible_distribution }}.yml"
+  static: no
+  tags:
+    - always
+
+# Setup/install tasks.
+- include: "setup-{{ ansible_distribution }}.yml"
+  static: no
+  tags:
+    - install
+
+# Configure Docker.
+- include: "configure-{{ ansible_distribution }}.yml"
+  static: no
+  tags:
+    - install
+    - configure
+
+- name: Ensure Docker has selected state and enabled on boot.
+  service:
+    name: "{{ docker_service }}"
+    state: "{{ docker_state }}"
+    enabled: yes
+  tags:
+    - always
