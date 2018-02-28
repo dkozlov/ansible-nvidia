@@ -1,6 +1,5 @@
 ansible-nvidia
 ====================
-
 ansible roles to install docker-ce, graphics drivers, cuda, cudnn and nvidia-docker
 
 Roles Variables
@@ -11,16 +10,16 @@ docker-ce
 - `docker_state`: started
 cuda
 --------------
-- `cuda_version_major` major cuda version
-- `cuda_version_minor` minor cuda version
+- `cuda_version_major` major cuda version, example: 9
+- `cuda_version_minor` minor cuda version, example: 1
 cudnn
 --------------
-- `cuda_version_major` major cuda version
-- `cuda_version_minor` minor cuda version
-- `cudnn_version` is a variable to specify cudnn version
+- `cuda_version_major` major cuda version, example: 9
+- `cuda_version_minor` minor cuda version, example: 1
+- `cudnn_version` cudnn version, example: 7
 nvidia-docker
 --------------
-- `nvidia_docker_version`is
+- `nvidia_docker_version` nvidia-docker version, example: 2.0.2
 
 Example Playbook
 ----------------
@@ -35,15 +34,22 @@ Example Playbook
     - { role: nvidia-docker, nvidia_docker_version: 2.0.2 }
 ```
 
-How-to run
+#How-to run
 ----------------
-
-# Install ansible
-`sudo apt install ansible`
-# Create hosts file in current directory
+- Install ansible
+```
+sudo apt install ansible
+```
+- Create hosts file in current directory
+```
 [gpus]
 192.168.1.2
-# Use locally available ssh keys to authorise logins on a remote machine 
-`ssh-copy-id  root@192.168.1.2`
-# Run playbook
-`ansible-playbook gpus.yml`
+```
+- Use locally available ssh keys to authorise logins on a remote machine 
+```
+ssh-copy-id  root@192.168.1.2
+```
+- Run playbook
+```
+ansible-playbook gpus.yml
+```
