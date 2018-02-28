@@ -38,7 +38,7 @@ Example Playbook
     - { role: nvidia-docker, nvidia_docker_version: 2.0.2 }
 ```
 
-#How-to run
+How-to run
 ----------------
 - Install ansible
 ```
