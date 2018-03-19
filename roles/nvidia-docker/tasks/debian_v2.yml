@@ -50,3 +50,14 @@
     dest: /etc/docker/daemon.json
     validate: python -m json.tool %s
   when: nvidia_docker_daemon_json_backup.stdout != ""
+
+- name: confirm content of /etc/docker/daemon.json after installation of nvidia-docker2
+  command: cat /etc/docker/daemon.json
+  register: nvidia_docker_daemon_json_v3
+  changed_when: False
+
+- name: content of /etc/docker/daemon.json is merged
+  copy:
+    content: "{{ nvidia_docker_daemon_json_v3.stdout | from_json | combine({'default-runtime':'nvidia'}) | to_nice_json }}"
+    dest: /etc/docker/daemon.json
+    validate: python -m json.tool %s

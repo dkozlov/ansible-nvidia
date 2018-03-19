@@ -9,8 +9,7 @@
   when: docker_opts is defined and docker_opts is not none
 
 - name: Configure docker environments
-  include: "configure-{{ ansible_service_mgr }}.yml"
-  static: no
+  include_tasks: "configure-{{ ansible_service_mgr }}.yml"
 
 - name: Add users to docker group
   user: "name={{ item }} append=yes groups=docker"

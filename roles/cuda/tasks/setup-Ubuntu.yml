@@ -1,4 +1,9 @@
 ---
+- name: Add an Apt signing key for CUDA
+  apt_key:
+    url: "{{ cuda_installer.cuda_apt_key }}"
+    state: present
+
 - name: Install CUDA repo
   apt: "deb={{ cuda_installer.deb }} state=present update_cache=yes"
   register: install_repo_result

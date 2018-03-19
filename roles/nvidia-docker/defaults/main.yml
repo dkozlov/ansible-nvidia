@@ -1,4 +1,4 @@
 ---
 
-nvidia_docker_version: 1.0.1
+nvidia_docker_version: 2.0.3
 nvidia_docker_docker_version: '*'

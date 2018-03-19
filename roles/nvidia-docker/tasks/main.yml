@@ -1,11 +1,22 @@
 ---
-
 - name: import task for Debian derivatives
-  include: debian_v1.yml
-  static: no
+  include_tasks: debian_v1.yml
   when: ansible_os_family == "Debian" and nvidia_docker_version.startswith('1')
 
 - name: import task for Debian derivatives
-  include: debian_v2.yml
-  static: no
+  include_tasks: debian_v2.yml
   when: ansible_os_family == "Debian" and nvidia_docker_version.startswith('2')
+
+- name: Reboot machine after nvidia-docker installed
+  shell: 'sleep 1 && shutdown -r now "Reboot triggered by Ansible" && sleep 1'
+  async: 1
+  poll: 0
+
+- block:
+  - name: Wait for server to restart
+    local_action:
+      module: wait_for
+        host={{ inventory_hostname }}
+        port=22
+        delay=10
+  become: false

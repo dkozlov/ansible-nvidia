@@ -1,2 +1,2 @@
 ---
-- include: configure-common.yml
+- import_tasks: configure-common.yml

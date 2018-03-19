@@ -1,12 +1,12 @@
 ---
 docker_deps:
-  - "linux-image-extra-{{ ansible_kernel }}"
+# - "linux-image-extra-{{ ansible_kernel }}"
   - linux-image-extra-virtual
   - apt-transport-https
   - ca-certificates
   - curl
   - software-properties-common
-  - python-software-properties
+# - python-software-properties
 
 docker_deprecated_packages:
   - docker

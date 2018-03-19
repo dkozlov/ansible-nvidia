@@ -6,20 +6,17 @@
     - always
 
 # Pre tasks
-- include: "pre-{{ ansible_distribution }}.yml"
-  static: no
+- include_tasks: "pre-{{ ansible_distribution }}.yml"
   tags:
     - always
 
 # Setup/install tasks.
-- include: "setup-{{ ansible_distribution }}.yml"
-  static: no
+- include_tasks: "setup-{{ ansible_distribution }}.yml"
   tags:
     - install
 
 # Configure Docker.
-- include: "configure-{{ ansible_distribution }}.yml"
-  static: no
+- include_tasks: "configure-Ubuntu.yml"
   tags:
     - install
     - configure

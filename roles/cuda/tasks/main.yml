@@ -6,10 +6,8 @@
 
 # Setup/install tasks.
 # eg: tasks/setup-Ubuntu.yml
-- include: "setup-{{ ansible_distribution }}.yml"
-  static: no
+- include_tasks: "setup-{{ ansible_distribution }}.yml"
 
 # Configure.
 # eg: tasks/configure-Ubuntu.yml
-- include: "configure-{{ ansible_distribution }}.yml"
-  static: no
+- include_tasks: "configure-{{ ansible_distribution }}.yml"

@@ -1,0 +1,35 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install python3-pip
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    state: present
+
+- name: Install git
+  apt:
+    name: git
+    state: present
+
+- name: Install htop
+  apt:
+    name: htop
+    state: present
+
+- name: Install tmux
+  apt:
+    name: tmux
+    state: present
+
+- name: Install unzip
+  apt:
+    name: unzip
+    state: present
