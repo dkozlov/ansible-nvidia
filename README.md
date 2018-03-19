@@ -23,7 +23,7 @@ cudnn
 
 nvidia-docker
 --------------
-- `nvidia_docker_version` nvidia-docker version, example: 2.0.2
+- `nvidia_docker_version` nvidia-docker version, example: 2.0.3
 
 Example Playbook
 ----------------
@@ -35,7 +35,7 @@ Example Playbook
     - { role: docker-ce, docker_version: latest }
     - { role: cuda, cuda_version_major: 9, cuda_version_minor: 1 }
     - { role: cudnn, cuda_version_major: 9, cuda_version_minor: 1, cudnn_version: 7 }
-    - { role: nvidia-docker, nvidia_docker_version: 2.0.2 }
+    - { role: nvidia-docker, nvidia_docker_version: 2.0.3 }
 ```
 
 How-to run
