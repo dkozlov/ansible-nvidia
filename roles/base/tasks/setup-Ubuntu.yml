@@ -33,3 +33,8 @@
   apt:
     name: unzip
     state: present
+
+- name: Install rsync
+  apt:
+    name: rsync
+    state: present

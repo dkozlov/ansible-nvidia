@@ -1,4 +1,5 @@
 ---
 # Setup task.
 # eg: tasks/setup-Ubuntu.yml
+- include_tasks: "setup-locale-{{ ansible_distribution }}.yml"
 - include_tasks: "setup-{{ ansible_distribution }}.yml"
