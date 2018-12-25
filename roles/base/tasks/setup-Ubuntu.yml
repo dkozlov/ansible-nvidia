@@ -1,4 +1,10 @@
 ---
+- name:
+  shell: "sudo add-apt-repository universe"
+
+- name:
+  shell: "sudo apt update"
+
 - name: Update and upgrade apt packages
   apt:
     upgrade: yes
@@ -11,7 +17,37 @@
 
 - name: Install docker-py
   pip:
-    name: docker-py
+    name: pip
+    state: latest
+
+- name: Install docker
+  pip:
+    name: docker
+    state: present
+
+- name: Install pyOpenSSL
+  pip:
+    name: pyOpenSSL
+    state: present
+
+- name: Install Ansible
+  pip:
+    name: ansible
+    state: present
+
+- name: Install jmespath
+  pip:
+    name: jmespath
+    state: present
+
+- name: Install apache-libcloud
+  pip:
+    name: apache-libcloud
+    state: present
+
+- name: Install jq
+  apt:
+    name: jq
     state: present
 
 - name: Install git
@@ -29,6 +65,11 @@
     name: tmux
     state: present
 
+- name: Install zip
+  apt:
+    name: zip
+    state: present
+
 - name: Install unzip
   apt:
     name: unzip
@@ -37,4 +78,39 @@
 - name: Install rsync
   apt:
     name: rsync
+    state: present
+
+- name: Install Silver Searcher
+  apt:
+    name: silversearcher-ag
+    state: present
+
+- name: Install sysdig
+  apt:
+    name: sysdig
+    state: present
+
+- name: Install ncdu
+  apt:
+    name: ncdu
+    state: present
+
+- name: Install nfs-common
+  apt:
+    name: nfs-common
+    state: present
+
+- name: Install httpie
+  apt:
+    name: httpie
+    state: present
+
+- name: Install docker-compose
+  pip:
+    name: docker-compose
+    state: present
+
+- name: Install openjdk-8-jre
+  apt:
+    name: openjdk-8-jre
     state: present

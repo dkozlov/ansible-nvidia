@@ -1,30 +1,148 @@
 ---
-# Include variables and define needed variables.
-- name: Include OS-specific variables
-  include_vars: "{{ ansible_distribution }}.yml"
-  tags:
-    - always
 
-# Pre tasks
-- include_tasks: "pre-{{ ansible_distribution }}.yml"
-  tags:
-    - always
+- name: Disable pinned Docker version
+  file:
+    dest: "/etc/apt/preferences.d/docker-ce.pref"
+    state: "absent"
+  when: docker_remove_package or docker_version == "" or docker_version == "latest"
 
-# Setup/install tasks.
-- include_tasks: "setup-{{ ansible_distribution }}.yml"
-  tags:
-    - install
+- name: Pin Docker version
+  template:
+    src: "etc/apt/preferences.d/docker-ce.pref.j2"
+    dest: "/etc/apt/preferences.d/docker-ce.pref"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: not docker_remove_package and (docker_version and docker_version != "latest")
 
-# Configure Docker.
-- include_tasks: "configure-Ubuntu.yml"
-  tags:
-    - install
-    - configure
+- name: Install Docker's dependencies
+  apt:
+    name: "{{ item }}"
+    update_cache: True
+    cache_valid_time: "{{ docker_apt_cache_time }}"
+  loop: "{{ docker_package_dependencies }}"
 
-- name: Ensure Docker has selected state and enabled on boot.
-  service:
-    name: "{{ docker_service }}"
-    state: "{{ docker_state }}"
-    enabled: yes
-  tags:
-    - always
+- name: Add Docker's GPG key
+  apt_key:
+    id: "{{ docker_apt_key_id }}"
+    url: "{{ docker_apt_key_server }}"
+
+- name: Configure upstream APT repository
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+
+- name: Remove Docker
+  apt:
+    name: "docker-{{ docker_edition }}"
+    state: "absent"
+  when: docker_remove_package
+
+- name: Install Docker
+  apt:
+    name: "docker-{{ docker_edition }}"
+    update_cache: True
+    cache_valid_time: "{{ docker_apt_cache_time }}"
+    state: "latest"
+  when: not docker_remove_package
+
+- name: Remove Upstart config file
+  file:
+    path: "/etc/default/docker"
+    state: "absent"
+
+- name: Ensure systemd directory exists
+  file:
+    path: "/etc/systemd/system"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Remove systemd unit file
+  file:
+    path: "/etc/systemd/system/docker.service"
+    state: "absent"
+  when: docker_remove_package
+
+#- name: Generate systemd unit file
+#  template:
+#    src: "etc/systemd/system/docker.service.j2"
+#    dest: "/etc/systemd/system/docker.service"
+#    owner: "root"
+#    group: "root"
+#    mode: "0644"
+#  register: docker_register_systemd_service
+#  when: not docker_remove_package
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: True
+  notify: ["Restart Docker"]
+  when: not docker_remove_package or docker_register_systemd_service is changed
+
+- name: Add user(s) to "docker" group
+  user:
+    name: "{{ item }}"
+    groups: "docker"
+    append: True
+  loop: "{{ docker_users }}"
+  when: not docker_remove_package and docker_users
+
+- name: Install Python for managing Docker login credentials
+  apt:
+    name: "python"
+    update_cache: True
+    cache_valid_time: "{{ docker_apt_cache_time }}"
+  when: not docker_remove_package and docker_registries
+
+- name: Install docker-py for managing Docker login credentials
+  pip:
+    name: "docker-py"
+  when: not docker_remove_package and docker_registries
+
+- name: Manage login credentials for 1 or more Docker registries
+  docker_login:
+    registry_url: "{{ item.registry_url | default(omit) }}"
+    username: "{{ item.username }}"
+    password: "{{ item.password }}"
+    email: "{{ item.email | default(omit)}}"
+    reauthorize: "{{ item.reauthorize | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: "{{ docker_registries }}"
+  when: not docker_remove_package and docker_registries
+  become_user: "{{ item.system_user | default(omit) }}"
+
+- name: Remove Docker Compose
+  file:
+    path: "/usr/local/bin/docker-compose"
+    state: "absent"
+  when: docker_remove_package
+
+- name: Install Docker Compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: "/usr/local/bin/docker-compose"
+    force: True
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: not docker_remove_package and docker_install_docker_compose
+
+- name: Remove cron tasks for Docker commands
+  cron:
+    name: "{{ item.name }}"
+    state: "absent"
+  loop: "{{ docker_cron_tasks }}"
+  when: docker_remove_package and docker_cron_tasks
+
+- name: Create cron tasks for Docker commands
+  cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    minute: "{{ item.schedule[0] }}"
+    hour: "{{ item.schedule[1] }}"
+    day: "{{ item.schedule[2] }}"
+    month: "{{ item.schedule[3] }}"
+    weekday: "{{ item.schedule[4] }}"
+  loop: "{{ docker_cron_tasks }}"
+  when: not docker_remove_package and docker_cron_tasks

@@ -1,4 +1,5 @@
 ---
 
+ubuntu_version: ubuntu18.04
 nvidia_docker_version: 2.0.3
 nvidia_docker_docker_version: '*'

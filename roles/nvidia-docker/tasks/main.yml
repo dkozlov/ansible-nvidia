@@ -12,11 +12,8 @@
   async: 1
   poll: 0
 
-- block:
-  - name: Wait for server to restart
-    local_action:
-      module: wait_for
-        host={{ inventory_hostname }}
-        port=22
-        delay=10
-  become: false
+- name: Wait for system to become reachable
+  wait_for_connection:
+    delay: 60
+    sleep: 30
+    timeout: 600

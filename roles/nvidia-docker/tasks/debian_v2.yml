@@ -18,9 +18,9 @@
     mode: 0644
     update_cache: yes
   with_items:
-    - 'deb https://nvidia.github.io/libnvidia-container/ubuntu16.04/amd64 /'
-    - 'deb https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/amd64 /'
-    - 'deb https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64 /'
+    - 'deb https://nvidia.github.io/libnvidia-container/{{ ubuntu_version }}/amd64 /'
+    - 'deb https://nvidia.github.io/nvidia-container-runtime/{{ ubuntu_version }}/amd64 /'
+    - 'deb https://nvidia.github.io/nvidia-docker/{{ ubuntu_version }}/amd64 /'
 
 - name: nvidia-docker (v1) is uninstalled
   apt:
@@ -48,7 +48,7 @@
   copy:
     content: "{{ nvidia_docker_daemon_json_backup.stdout | from_json | combine(nvidia_docker_daemon_json_v2.stdout | from_json) }}"
     dest: /etc/docker/daemon.json
-    validate: python -m json.tool %s
+    validate: python3 -m json.tool %s
   when: nvidia_docker_daemon_json_backup.stdout != ""
 
 - name: confirm content of /etc/docker/daemon.json after installation of nvidia-docker2
@@ -60,4 +60,4 @@
   copy:
     content: "{{ nvidia_docker_daemon_json_v3.stdout | from_json | combine({'default-runtime':'nvidia'}) | to_nice_json }}"
     dest: /etc/docker/daemon.json
-    validate: python -m json.tool %s
+    validate: python3 -m json.tool %s
