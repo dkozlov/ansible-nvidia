@@ -20,7 +20,7 @@
     name: python3-pip
     state: present
 
-- name: Install docker-py
+- name: Upgrade pip
   pip:
     name: pip
     state: latest
