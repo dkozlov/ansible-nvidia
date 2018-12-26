@@ -1,4 +1,9 @@
 ---
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    state: present
+
 - name:
   shell: "sudo add-apt-repository universe"
 
