@@ -35,7 +35,7 @@
 
 - name: nvidia-docker (v2) is installed
   apt:
-    name: "nvidia-docker2={{ nvidia_docker_version }}+docker{{ nvidia_docker_docker_version }}-1"
+    name: "nvidia-docker2={{ nvidia_docker_version }}"
     state: present
   notify: restart docker service
 
