@@ -1,15 +1,30 @@
 ---
 
-- name: Disable pinned Docker version
+- name: Disable pinned docker-ce version
   file:
     dest: "/etc/apt/preferences.d/docker-ce.pref"
     state: "absent"
   when: docker_remove_package or docker_version == "" or docker_version == "latest"
 
-- name: Pin Docker version
+- name: Disable pinned docker-ce-cli version
+  file:
+    dest: "/etc/apt/preferences.d/docker-ce-cli.pref"
+    state: "absent"
+  when: docker_remove_package or docker_version == "" or docker_version == "latest"
+
+- name: Pin docker-ce version
   template:
     src: "etc/apt/preferences.d/docker-ce.pref.j2"
     dest: "/etc/apt/preferences.d/docker-ce.pref"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: not docker_remove_package and (docker_version and docker_version != "latest")
+
+- name: Pin docker-ce-cli version
+  template:
+    src: "etc/apt/preferences.d/docker-ce-cli.pref.j2"
+    dest: "/etc/apt/preferences.d/docker-ce-cli.pref"
     owner: "root"
     group: "root"
     mode: "0644"
