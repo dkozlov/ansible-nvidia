@@ -2,6 +2,11 @@
 # vars file for cudnn
 cudnn_installer_map:
   bionic:
+    v7.6:
+      v10.1:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/libcudnn7_7.6.4.38-1+cuda10.1_amd64.deb
+      v10.0:
+        deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/libcudnn7_7.6.4.38-1+cuda10.0_amd64.deb
     v7.3:
       v10.0:
         deb: http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/libcudnn7_7.3.0.29-1+cuda10.0_amd64.deb
